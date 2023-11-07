@@ -1,19 +1,13 @@
-
-inteiro soma(inteiro: a, inteiro:b)
-	retorna(a + b)
-fim
+{Condicional Simples}
+inteiro: a
 
 inteiro principal()
-	inteiro: a
-	inteiro: b
-	inteiro: c
+	inteiro: ret
+	
+	a := 10    
+	se a > 5 então
+        ret := 1
+    fim
 
-	leia(a)
-	leia(b)
-
-	c := soma(a, b)
-
-	escreva(c)
-
-  retorna(0)
+    retorna(ret)
 fim

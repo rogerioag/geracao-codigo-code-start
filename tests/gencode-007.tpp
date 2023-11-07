@@ -1,27 +1,18 @@
-
-inteiro soma(inteiro: x, inteiro: y)
-    retorna(x + y)
-fim
-
-inteiro sub(inteiro: z, inteiro: t)
-    retorna(z - t)
-fim
+{Condicional Composto Aninhado}
+inteiro: a
 
 inteiro principal()
-    inteiro: a
-    inteiro: b
-    inteiro: c
-    inteiro: i
+	inteiro: ret
+	a := 25    
+	se a > 5 então
+		se a < 20 então
+			ret := 1
+		senão
+			ret := 2
+		fim
+	senão
+		ret := 0
+  fim
 
-    i := 0
-
-    repita
-        leia(a)
-        leia(b)
-        c := soma(soma(a,b), sub(a,b))
-        escreva(c)
-        i := i + 1
-    até i = 5
-
-    retorna(0)
+  retorna(ret)
 fim

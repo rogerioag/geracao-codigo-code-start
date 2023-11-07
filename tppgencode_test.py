@@ -1,4 +1,6 @@
 import tpplex
+import tppparser
+import tppsema
 import subprocess
 import os, fnmatch
 
@@ -85,3 +87,41 @@ def test_019():
 
 def test_020():
     assert execute_test("gencode-020.tpp") == True
+
+def test_021():
+    assert execute_test("gencode-021.tpp") == True
+
+def test_022():
+    assert execute_test("gencode-022.tpp") == True
+
+def test_023():
+    assert execute_test("gencode-023.tpp") == True
+
+def test_024():
+    assert execute_test("gencode-024.tpp") == True
+
+def test_025():
+    assert execute_test("gencode-025.tpp") == True
+
+def test_026():
+    assert execute_test("gencode-026.tpp") == True
+
+def test_027():
+    assert execute_test("gencode-027.tpp") == True
+
+def test_028():
+    assert execute_test("gencode-028.tpp") == True
+
+def test_029():
+    assert execute_test("gencode-029.tpp") == True
+
+def test_030():
+    assert execute_test("gencode-030.tpp") == True
+
+def test_031():
+    assert execute_test("gencode-031.tpp") == True
+
+def test_032():
+    assert execute_test("gencode-032.tpp") == True
+
+

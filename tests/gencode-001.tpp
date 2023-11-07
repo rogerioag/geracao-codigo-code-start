@@ -1,12 +1,5 @@
-{Declaração de variáveis}
-inteiro: a
+{Função principal vazia, Módulo vazio}
 
 inteiro principal()
-	inteiro: b
-	
-	a := 10
-
-	b := a
-	
-    retorna(b)
 fim
+

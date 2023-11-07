@@ -1,25 +1,24 @@
-{Maior de 4 número: contribuição do Kawamoto}
+{Repita, Leia, Escreva, Função}
 
-inteiro maiorde2(inteiro:x, inteiro:y)
-	se (x > y) então
-		retorna(x)
-	fim
-	retorna(y)
-fim
-
-inteiro maiorde4(inteiro:a, inteiro:b, inteiro:c, inteiro:d)
-	retorna(maiorde2(maiorde2(a,b),maiorde2(c,d)))
+inteiro soma(inteiro: a, inteiro:b)
+    retorna(a + b)
 fim
 
 inteiro principal()
-	inteiro: A,B,C,D
-	
-	leia(A)
-	leia(B)
-	leia(C)
-	leia(D)
-	
-	escreva(maiorde4(A,B,C,D))	
+    inteiro: a
+    inteiro: b
+    inteiro: c
+    inteiro: i
 
-  	retorna(0)
+    i := 0
+
+    repita
+        leia(a)
+        leia(b)
+        c := soma(a, b)
+        escreva(c)
+        i := i + 1
+    até i = 5
+
+    retorna(0)
 fim

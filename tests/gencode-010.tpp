@@ -1,21 +1,16 @@
-inteiro: n
-
-inteiro fatorial(inteiro: n)
-    inteiro: fat
-    se n > 0 então {não calcula se n > 0}
-        fat := 1
-        repita
-            fat := fat * n
-            n := n - 1
-        até n = 0
-        retorna(fat) {retorna o valor do fatorial de n}
-    senão
-        retorna(0)
-    fim
-fim
+{Expressões, Leia e Escreva}
 
 inteiro principal()
-    leia(n)
-    escreva(fatorial(n))
-    retorna(0)
+	inteiro: a
+	inteiro: b
+	inteiro: c
+
+	leia(a)
+	leia(b)
+
+	c := a + b
+
+	escreva(c)
+
+  retorna(0)
 fim

@@ -1,15 +1,12 @@
-inteiro: n
-inteiro: soma
+{Expressão e Atribuição}
+inteiro: a,b
 
 inteiro principal()
-	n := 10
-	soma := 0
-	repita
-		soma := soma + n
-		n := n - 1
-	até n = 0
+	inteiro: c
 
-	escreva(soma)
+	a := 10
+	b := 20
+	c : = a + b
 
-	retorna(0)
+    retorna(c)
 fim

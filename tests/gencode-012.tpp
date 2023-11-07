@@ -1,24 +1,21 @@
-inteiro: ano
+{Leia, Escreva, Chamada de Função}
 
-inteiro modulo(inteiro:numerador,denominador)
-	se (numerador < denominador) então
-	  retorna (numerador)
-	fim
 
-	repita
-		numerador := numerador - denominador
-	até (numerador <= denominador)
-
-	retorna(numerador)
+inteiro soma(inteiro: a, inteiro:b)
+	retorna(a + b)
 fim
 
 inteiro principal()
-   leia(ano)
-   
-   se (modulo(ano,400) = 0) || (modulo(ano,4) = 0) && (!(modulo(ano,100) = 0)) então
-      escreva(ano)
-      escreva(1) {Verdadeiro}
-   fim
+	inteiro: a
+	inteiro: b
+	inteiro: c
 
-   retorna(0)
+	leia(a)
+	leia(b)
+
+	c := soma(a, b)
+
+	escreva(c)
+
+  retorna(0)
 fim
