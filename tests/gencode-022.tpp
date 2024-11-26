@@ -20,7 +20,7 @@ inteiro principal()
 	leia(C)
 	leia(D)
 	
-	escreva(maiorde4(A,B,C,D))	
+	escreva(maiorde4(A,B,C,D))
 
-  	retorna(0)
+	retorna(0)
 fim

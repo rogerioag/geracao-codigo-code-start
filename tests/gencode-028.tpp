@@ -8,8 +8,8 @@ inteiro: V1[T]
 inteiro somavet(inteiro: vet[], inteiro: tam)
 	inteiro: result 
 	result := 0
+	inteiro: i
 
-	inteiro: i 
 	i := 0
 
 	repita

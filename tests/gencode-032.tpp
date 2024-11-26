@@ -2,6 +2,7 @@
 
 inteiro partition(inteiro: v[], inteiro: e, inteiro: d)
 	inteiro: pivo, i, j
+	inteiro: aux
     pivo := := v[e]
 	i := e-1
     j := d+1
@@ -9,6 +10,7 @@ inteiro partition(inteiro: v[], inteiro: e, inteiro: d)
 	repita
 		repita
 			i := i + 1;
+
 		até v[i] == pivo
 		
 		repita
@@ -19,8 +21,6 @@ inteiro partition(inteiro: v[], inteiro: e, inteiro: d)
         se i >= j então
 			retorna(j)
 		
-        inteiro: aux
-
         aux := v[i]
         v[i] := v[j]
         v[j] := aux
@@ -28,8 +28,8 @@ inteiro partition(inteiro: v[], inteiro: e, inteiro: d)
 fim
 
 quick (inteiro: v[], inteiro: e, inteiro: d)
+    inteiro: p
     se e < d então
-        inteiro: p
         p := partition(v, e, d)
         quick(v, e, p)
         quick(v, p+1, d)
@@ -37,11 +37,23 @@ quick (inteiro: v[], inteiro: e, inteiro: d)
 fim
 
 inteiro principal()
-    inteiro: v[10] := {5, 3, 2, 4, 7, 1, 0, 6, 9, 8}
+    {inteiro: v[10] := {5, 3, 2, 4, 7, 1, 0, 6, 9, 8}}
+
+    inteiro: i
+    inteiro: v[10]
+    v[0] := 5
+    v[1] := 3
+    v[2] := 2
+    v[3] := 4
+    v[4] := 7
+    v[5] := 1
+    v[6] := 0
+    v[7] := 6
+    v[8] := 9
+    v[9] := 8
     
     quick(v, 0, 9)
     
-    inteiro: i
     i := 0
 
     repita 

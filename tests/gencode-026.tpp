@@ -1,23 +1,21 @@
 {Para Binário}
 
 paraBinario(inteiro: n) 
-
-    inteiro: N[32]; 
+    inteiro: N[32]
   
     inteiro: i
+    inteiro: j
     
-    para i := 0 até n > 0 faça
+    i := 0
 
+    repita
         N[i] := n%2
         n := n/2 
-        
-    fim
+    até n > 0
 
-    inteiro: j
     j := i -1 
 
     repita
-
         escreva(N[j])
         j := j -1 
 
@@ -29,6 +27,5 @@ inteiro principal()
     inteiro : num
 
     leia(num)
-    paraBinario(num) 
-
+    paraBinario(num)
 fim

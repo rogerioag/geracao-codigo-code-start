@@ -2,8 +2,9 @@
 
 inteiro maiorvetor(inteiro:v[], inteiro:tam)
 	inteiro: maior
-	maior := v[0]
 	inteiro i:= 0
+	maior := v[0]
+
 	repita
 		se v[i] > maior
 			maior := v[i]

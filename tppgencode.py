@@ -38,13 +38,13 @@ root = None
 # Programa Principal.
 if __name__ == "__main__":
     if(len(sys.argv) < 2):
-        raise TypeError(error_handler.newError('ERR-SEM-USE'))
+        raise TypeError(error_handler.newError('ERR-GC-USE'))
 
     aux = argv[1].split('.')
     if aux[-1] != 'tpp':
-      raise IOError(error_handler.newError('ERR-SEM-NOT-TPP'))
+      raise IOError(error_handler.newError('ERR-GC-NOT-TPP'))
     elif not os.path.exists(argv[1]):
-        raise IOError(error_handler.newError('ERR-SEM-FILE-NOT-EXISTS'))
+        raise IOError(error_handler.newError('ERR-GC-FILE-NOT-EXISTS'))
     else:
         data = open(argv[1])
         source_file = data.read()

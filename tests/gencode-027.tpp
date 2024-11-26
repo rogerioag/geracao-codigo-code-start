@@ -3,12 +3,13 @@
 inteiro principal()
 	inteiro: digitado
 	inteiro: i
-	i := 1
+	flutuante: f
+	inteiro: int
+	flutuante: resultado
+
 	leia(digitado)
+	i := 1
 	repita
-		flutuante: f
-		inteiro: int
-		flutuante: resultado
 		f := i/2.
 		int := i/2
 		resultado := f - int
