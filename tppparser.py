@@ -13,11 +13,12 @@ logging.basicConfig(
 )
 log = logging.getLogger()
 
+source_file = ""
 
 import ply.yacc as yacc
  
 # Get the token map from the lexer.  This is required.
-from tpplex import tokens
+from tpplex import tokens, define_column
 
 from mytree import MyNode
 from anytree.exporter import DotExporter, UniqueDotExporter
@@ -26,6 +27,9 @@ from anytree import RenderTree, AsciiStyle
 from myerror import MyError
 
 error_handler = MyError('ParserErrors')
+
+check_tpp = False
+check_key = False
 
 root = None
 
@@ -50,7 +54,6 @@ def p_programa(p):
 #    (lista_declaracoes)                          (lista_declaracoes)
 #          /           \                                    |
 # (lista_declaracoes)  (declaracao)                    (declaracao)
-
 
 def p_lista_declaracoes(p):
     """lista_declaracoes : lista_declaracoes declaracao
@@ -111,8 +114,7 @@ def p_declaracao_variaveis(p):
 def p_inicializacao_variaveis(p):
     """inicializacao_variaveis : atribuicao"""
 
-    pai = MyNode(name='inicializacao_variaveis',
-                 type='INICIALIZACAO_VARIAVEIS')
+    pai = MyNode(name='inicializacao_variaveis', type='INICIALIZACAO_VARIAVEIS')
     p[0] = pai
     p[1].parent = pai
 
@@ -181,16 +183,17 @@ def p_indice_error(p):
                 | indice ABRE_COLCHETE error FECHA_COLCHETE
     """
 
-    print("Erro na definicao do indice. Expressao ou indice.")
+    # print("Erro na definicao do indice. Expressao ou indice.")
+    print(error_handler.newError(check_key, 'ERR-SYN-INDICE'))
 
-    print("Erro:p[0]:{p0}, p[1]:{p1}, p[2]:{p2}, p[3]:{p3}".format(
-        p0=p[0], p1=p[1], p2=p[2], p3=p[3]))
+    # print("Erro:p[0]:{p0}, p[1]:{p1}, p[2]:{p2}, p[3]:{p3}".format(p0=p[0], p1=p[1], p2=p[2], p3=p[3]))
     error_line = p.lineno(2)
-    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    father = MyNode(name='ERR-SYN-INDICE::{}'.format(error_line), type='ERROR')
     logging.error(
         "Syntax error parsing index rule at line {}".format(error_line))
     parser.errok()
-    p[0] = father
+    p[0] = father    
+
     # if len(p) == 4:
     #     p[1] = new_node('ABRECOLCHETES', father)
     #     p[2].parent = father
@@ -713,7 +716,6 @@ def p_fator(p):
 def p_fator_error(p):
     """fator : ABRE_PARENTESE error FECHA_PARENTESE
         """
-ERR-SYN-FATOR
 
 def p_numero(p):
     """numero : NUM_INTEIRO
@@ -784,10 +786,16 @@ def p_lista_argumentos(p):
 
 def p_lista_argumentos_error(p):
     """lista_argumentos : error VIRGULA expressao
-                    | expressao
-                    | vazio
         """
-    # error_handler.newError('ERR-SYN-LISTA-ARGUMENTOS')
+    print(error_handler.newError(check_key, 'ERR-SYN-LISTA-ARGUMENTOS'))
+    
+    error_line = p.lineno(2)
+    father = MyNode(name='ERR-SYN-LISTA-ARGUMENTOS::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Syntax error parsing index rule at line {}".format(error_line))
+    parser.errok()
+    p[0] = father
+
 
 
 def p_vazio(p):
@@ -801,37 +809,65 @@ def p_error(p):
 
     if p:
         token = p
-        print("Erro:[{line},{column}]: Erro próximo ao token '{token}'".format(
-            line=token.lineno, column=token.lineno, token=token.value))
+        line = token.lineno
+        column = define_column(source_file, token.lexpos)
+        if not check_key:
+            print("Erro:[{line},{column}]: Erro próximo ao token '{token}'".format(line=line, column=column, token=token.value))
+        else:
+            print(error_handler.newError(check_key, "ERR-SYN-EOF-INESPERADO"))
+    else:
+        print(error_handler.newError(check_key, "ERR-SYN-EOF-INESPERADO"))
+
 
 # Programa principal.
 
-# Build the parser.
-parser = yacc.yacc(method="LALR", optimize=True, start='programa', debug=True,
-                   debuglog=log, write_tables=False, tabmodule='tpp_parser_tab')
+def main():
 
-if __name__ == "__main__":
-    if(len(sys.argv) < 2):
-        raise TypeError(error_handler.newError('ERR-SYN-USE'))
+    global check_tpp
+    global check_key
 
-    aux = argv[1].split('.')
-    if aux[-1] != 'tpp':
-      raise IOError(error_handler.newError('ERR-SYN-NOT-TPP'))
-    elif not os.path.exists(argv[1]):
-        raise IOError(error_handler.newError('ERR-SYN-FILE-NOT-EXISTS'))
+    check_ttp = False
+    check_key = False
+    
+    for idx, arg in enumerate(sys.argv):
+        # print("Argument #{} is {}".format(idx, arg))
+        aux = arg.split('.')
+        if aux[-1] == 'tpp':
+            check_tpp = True
+            idx_tpp = idx
+
+        if(arg == "-k"):
+            check_key = True
+    
+    # print ("No. of arguments passed is ", len(sys.argv))
+
+    if(not check_key and len(sys.argv) < 2):
+        raise TypeError(error_handler.newError(check_key, 'ERR-SYN-USE'))
+    elif (check_key and len(sys.argv) < 3):
+        raise TypeError(error_handler.newError(check_key, 'ERR-SYN-USE'))
+
+    if not check_tpp:
+      raise IOError(error_handler.newError(check_key, 'ERR-SYN-NOT-TPP'))
+    elif not os.path.exists(argv[idx_tpp]):
+        raise IOError(error_handler.newError(check_key, 'ERR-SYN-FILE-NOT-EXISTS'))
     else:
-        data = open(argv[1])
+        data = open(argv[idx_tpp])
         source_file = data.read()
         parser.parse(source_file)
 
     if root and root.children != ():
-        print("Generating Syntax Tree Graph...")
+        print(error_handler.newError(check_key, 'WAR-SYN-GEN-SYNTAX-TREE'))
         # DotExporter(root).to_picture(argv[1] + ".ast.png")
         UniqueDotExporter(root).to_picture(argv[1] + ".unique.ast.png")
         DotExporter(root).to_dotfile(argv[1] + ".ast.dot")
         UniqueDotExporter(root).to_dotfile(argv[1] + ".unique.ast.dot")
-        print(RenderTree(root, style=AsciiStyle()).by_attr())
-        print("Graph was generated.\nOutput file: " + argv[1] + ".ast.png")
+        # print(RenderTree(root, style=AsciiStyle()).by_attr())
+        with open(argv[1] + "ascii_tree.txt", "w") as f:
+            f.write(RenderTree(root, style=AsciiStyle()).by_attr())
+        # print("Output file: " + argv[1] + ".ast.png")
+        print(error_handler.newError(check_key, 'WAR-SYN-OUTPUT-FILE', argv[1] + ".ast.png"))
+        print(error_handler.newError(check_key, 'WAR-SYN-ANA-SUCCESS'))
+        
 
         # DotExporter(root, graph="graph",
         #            nodenamefunc=MyNode.nodenamefunc,
@@ -840,7 +876,23 @@ if __name__ == "__main__":
         #            edgetypefunc=MyNode.edgetypefunc).to_picture(argv[1] + ".ast2.png")
 
         # DotExporter(root, nodenamefunc=lambda node: node.label).to_picture(argv[1] + ".ast3.png")
+        
 
     else:
-        print(error_handler.newError('WAR-SYN-NOT-GEN-SYN-TREE'))
-    print('\n\n')
+        print(error_handler.newError(check_key, "ERR-SYN-IRRECUPERAVEL"))
+        print(error_handler.newError(check_key, 'WAR-SYN-NOT-GEN-SYNTAX-TREE'))
+    # print('\n\n')
+
+
+# Build the parser.
+parser = yacc.yacc(method="LALR", optimize=True, start='programa', debug=True,
+                   debuglog=log, write_tables=False, tabmodule='tpp_parser_tab')
+
+if __name__ == "__main__":
+
+    try:
+        main()
+    except Exception as e:
+        print(e)
+    except (ValueError, TypeError):
+        print(e)
