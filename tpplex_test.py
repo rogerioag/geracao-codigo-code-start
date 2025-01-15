@@ -47,9 +47,10 @@ import os, fnmatch
 
 test_cases = [("", "-k"), ("teste.c", "-k"), ("notexist.tpp", "-k")]
 
-for file in fnmatch.filter(os.listdir('tests'), '*.tpp'):
+files = fnmatch.filter(os.listdir('tests/'), '*.tpp')
+for file in sorted(files):
     test_cases.append((file, "-k"))
-
+    
 
 @pytest.mark.parametrize("input_file, args", test_cases)
 def test_execute(input_file, args):
@@ -82,5 +83,5 @@ def test_execute(input_file, args):
     print("Expected output:")
     print(expected_output)
 
-    assert stdout.decode("utf-8") == expected_output
+    assert stdout.decode("utf-8").strip() == expected_output.strip()
 

@@ -6,7 +6,8 @@ import os, fnmatch
 
 test_cases = [("", "-k"), ("teste.c", "-k"), ("notexist.tpp", "-k")]
 
-for file in fnmatch.filter(os.listdir('tests/'), '*.tpp'):
+files = fnmatch.filter(os.listdir('tests/'), '*.tpp')
+for file in sorted(files):
     test_cases.append((file, "-k"))
 
 
